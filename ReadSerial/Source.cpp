@@ -74,7 +74,7 @@ void system_error(char *name) {
 int main(int argc, char **argv) {
 
 	int ch;
-	char buffer[1];
+	byte buffer[1];
 	HANDLE file;
 	//HANDLE doc;
 	COMMTIMEOUTS timeouts;
@@ -254,6 +254,7 @@ int main(int argc, char **argv) {
 	WriteFile(file, &ch, 1, &written, NULL);
 
 	auto start = std::chrono::high_resolution_clock::now();
+	int count = 0;
 
 	// basic terminal loop:
 	do {
@@ -261,8 +262,8 @@ int main(int argc, char **argv) {
 		ReadFile(file, buffer, sizeof(buffer), &read, NULL);
 		if (read)
 		{
-			
-			if (buffer[0] == '\n') {
+
+			/*if (buffer[0] == '\n') {
 				uint32_t time = (uint32_t)(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - start).count());
 				//int length = numDigits(time);
 				//char times[10];
@@ -271,15 +272,27 @@ int main(int argc, char **argv) {
 				doc << time << '\n';
 				std::cout << '\n';
 			}
+			else if (buffer[0] == ' ') {
+				doc << ' ';
+				std::cout << ' ';
+			}
 			else
-			{
-				std::cout << buffer[0];
+			{*/
+			if (++count < 3) {
+				std::cout << (int)buffer[0] << '\t';
+				doc << (int)buffer[0] << '\t';
+			}
+			else {
+				std::cout << (int)buffer[0] << '\n';
+				doc << (int)buffer[0] << '\n';
+				count = 0;
+			}
 				//WriteFile(screen, buffer, read, &written, NULL);
 				//WriteFile(doc, buffer, read, &written, NULL);
 				//fputs(buffer, fptr);
-				doc << buffer[0] << ' ';
+				//doc << buffer[0];// << ' ';
 				//doc.write(buffer, read);
-			}
+			//}
 		}
 
 		// check for keypress, and write any out the port.
