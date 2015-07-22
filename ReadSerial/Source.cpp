@@ -75,6 +75,9 @@ int main(int argc, char **argv) {
 
 	int ch;
 	byte buffer[1];
+	byte ticks[2];
+	short ptick=0;
+	short loop=0;
 	HANDLE file;
 	//HANDLE doc;
 	COMMTIMEOUTS timeouts;
@@ -278,15 +281,35 @@ int main(int argc, char **argv) {
 			}
 			else
 			{*/
-			if (++count < 3) {
+			if (sizeof(buffer) > 1)
+			{
+				std::cout << "BUFFERSIZE>1" << std::endl;
+				break;
+			}
+			if (++count < 3) {	
 				std::cout << (int)buffer[0] << '\t';
 				doc << (int)buffer[0] << '\t';
 			}
-			else {
-				std::cout << (int)buffer[0] << '\n';
-				doc << (int)buffer[0] << '\n';
-				count = 0;
+			else if (count < 4) {
+				ticks[0] = buffer[0];
 			}
+			else {
+				ticks[1] = buffer[0];
+				short tick = (ticks[1] << 8) | ticks[0];
+				if (tick - ptick > 30000)
+				{
+					loop--;
+				}
+				else if (tick - ptick < -30000)
+				{
+					loop++;
+				}				
+				std::cout << tick << '\n';
+				doc << tick << '\t' << loop * 65536 + tick << '\n'; '\n';
+				count = 0;
+				ptick = tick;
+			}
+			//std::cout << "Count: " << count << ", buffersize: " << sizeof(buffer) << std::endl;
 				//WriteFile(screen, buffer, read, &written, NULL);
 				//WriteFile(doc, buffer, read, &written, NULL);
 				//fputs(buffer, fptr);
