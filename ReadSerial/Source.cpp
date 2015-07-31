@@ -304,8 +304,8 @@ int main(int argc, char **argv) {
 				{
 					loop++;
 				}				
-				std::cout << tick << '\n';
-				doc << tick << '\t' << loop * 65536 + tick << '\n'; '\n';
+				std::cout << loop * 65536 + tick << '\n';
+				doc << loop * 65536 + tick << '\n';
 				count = 0;
 				ptick = tick;
 			}
