@@ -258,6 +258,7 @@ int main(int argc, char **argv) {
 
 	auto start = std::chrono::high_resolution_clock::now();
 	int count = 0;
+	int ecount = 0;
 
 	// basic terminal loop:
 	do {
@@ -281,8 +282,7 @@ int main(int argc, char **argv) {
 			}
 			else
 			{*/
-			if (sizeof(buffer) > 1)
-			{
+			if (sizeof(buffer) > 1) {
 				std::cout << "BUFFERSIZE>1" << std::endl;
 				break;
 			}
@@ -303,9 +303,16 @@ int main(int argc, char **argv) {
 				else if (tick - ptick < -30000)
 				{
 					loop++;
-				}				
+				}
+				else if (abs(tick - ptick) > 10)
+				{
+					if (ecount++ == 0) {
+						tick = ptick;
+					}
+					else ecount == 0;
+				}
 				std::cout << loop * 65536 + tick << '\n';
-				doc << loop * 65536 + tick << '\n';
+				doc << double(loop * 65536 + tick)/200.0 << '\n';
 				count = 0;
 				ptick = tick;
 			}
