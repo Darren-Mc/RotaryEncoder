@@ -287,8 +287,8 @@ int main(int argc, char **argv) {
 				break;
 			}
 			if (++count < 3) {	
-				std::cout << (int)buffer[0] << '\t';
-				doc << (int)buffer[0] << '\t';
+				//std::cout << round((double)buffer[0]/0.51)/100 << '\t';
+				doc << round((double)buffer[0] / 0.51) / 100 << '\t';
 			}
 			else if (count < 4) {
 				ticks[0] = buffer[0];
